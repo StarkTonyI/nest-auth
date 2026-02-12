@@ -1,4 +1,5 @@
-import { IsEmail, IsString } from "class-validator";
+import { UserRole } from "@prisma/client";
+import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 
 export class SignInUserDTO {
   @IsEmail()
@@ -6,4 +7,9 @@ export class SignInUserDTO {
 
   @IsString()
   password: string;
+
+      
+      @IsEnum(UserRole, { message: 'Роль должна быть либо ADMIN, либо USER' })
+    @IsOptional() 
+    role?: UserRole; // Одиночное значение
 }

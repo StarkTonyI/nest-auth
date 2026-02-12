@@ -41,7 +41,7 @@ async login(login: SignInUserDTO){
     if (!isPasswordValid) {
          throw new UnauthorizedException('Неверный email или пароль');
     }
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
      return { access_token: await this.jwt.signAsync(payload) };
 
     }

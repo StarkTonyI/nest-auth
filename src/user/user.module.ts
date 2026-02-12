@@ -7,6 +7,6 @@ import { PrismaMoodule } from "src/database/database.module";
     imports:[PrismaMoodule],
     controllers:[]
 })
-export class User {};
+export class UserModule {};
 
 

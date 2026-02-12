@@ -25,6 +25,7 @@ export class AuthController {
         const findUser = await this.auth.login(login);
         return findUser;
     }
+    
     @Roles('ADMIN')
     @UseGuards(AuthGuard('jwt'), RolesQuard)
     

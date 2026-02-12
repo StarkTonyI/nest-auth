@@ -1,5 +1,5 @@
-import { IsEmail, IsString, Matches, MaxLength, MinLength } from "class-validator";
-
+import { IsEmail, IsEnum, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { UserRole } from '@prisma/client'
 export class RegisterUserDTO {
 
     @IsString()
@@ -13,7 +13,9 @@ export class RegisterUserDTO {
     @IsString()
     @MinLength(4)
     @MaxLength(20)
-    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})
     password: string;
-
+    
+    @IsEnum(UserRole, { message: 'Роль должна быть либо ADMIN, либо USER' })
+  @IsOptional() 
+  role?: UserRole; // Одиночное значение
 }
