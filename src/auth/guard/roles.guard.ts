@@ -16,11 +16,6 @@ export class RolesQuard  implements CanActivate {
 
         const req = context.switchToHttp().getRequest();
         const user = req.user;
-
-        console.log(user)
-        console.log(reqRoles)
-
-        console.log(reqRoles.includes(user.role))
         // Важный момент: если JWT Guard не сработал или не стоит перед этим, user будет undefined
         if (!user || !user.role) return false;
 

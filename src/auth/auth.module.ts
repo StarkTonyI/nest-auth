@@ -3,18 +3,31 @@ import { PrismaMoodule } from "src/database/database.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtModule } from "@nestjs/jwt";
-import { JwtStrategy } from "./strategy/jwt.strategy";
+import { JwtStrategy } from "./strategy/JWT/jwt.strategy";
 import { UserModule } from "src/user/user.module";
 import { UserService } from "src/user/user.service";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtRefresh } from "./strategy/JWT/jwt-refresh.strategy";
+import { APP_GUARD } from "@nestjs/core";
+import { JwtAuth } from "./guard/jwt_auth";
 
 @Module({
-    providers:[AuthService, JwtStrategy, UserService],
+    providers:[AuthService, JwtStrategy, UserService, JwtRefresh, {
+  provide: APP_GUARD,
+  useClass: JwtAuth,
+} ],
     imports:[PrismaMoodule, 
-    JwtModule.register({
-        secret: process.env.SUPER_SECRET_KEY || 'asfoijoaisjfoiasjfoiaoisjjfoiasijf', // знаю знаю что нужно в env!
+    JwtModule.registerAsync({
+        imports: [ConfigModule],
+        useFactory: async (configService: ConfigService) => ({
+        secret: configService.getOrThrow('JWT_SECRET'),
         signOptions: { expiresIn: '60m' },
-        }), UserModule
+    }),
+
+   inject: [ConfigService],
+ }), UserModule, 
     ],
     controllers:[AuthController]
 })
 export class AuthModule {};
+

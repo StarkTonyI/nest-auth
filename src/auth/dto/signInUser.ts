@@ -9,7 +9,7 @@ export class SignInUserDTO {
   password: string;
 
       
-      @IsEnum(UserRole, { message: 'Роль должна быть либо ADMIN, либо USER' })
-    @IsOptional() 
-    role?: UserRole; // Одиночное значение
+  @IsEnum(UserRole, { message: 'Роль должна быть либо ADMIN, либо USER' })
+  @IsOptional() 
+  role?: UserRole; // Одиночное значение
 }

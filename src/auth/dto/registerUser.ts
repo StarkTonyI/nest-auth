@@ -16,6 +16,7 @@ export class RegisterUserDTO {
     password: string;
     
     @IsEnum(UserRole, { message: 'Роль должна быть либо ADMIN, либо USER' })
-  @IsOptional() 
-  role?: UserRole; // Одиночное значение
+    @IsOptional() 
+    role?: UserRole; // Одиночное значение
+
 }
