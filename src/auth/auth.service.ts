@@ -17,26 +17,20 @@ export class AuthService {
     const saltRounds = 10;
     return await bcrypt.hash(password, saltRounds);
   }
-
   // 2. Сравнение пароля при логине
   async validateUser(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
-
   async refreshToken(refreshToken:string){
     if(!refreshToken) return null;
     
   }
-
   async getTokens(payload: { email:string, userId:string }){
     return {
       acess_token: await this.jwt.signAsync(payload),
       refresh_token: await this.jwt.signAsync(payload, { secret: this.config.getOrThrow('JWT_REFRESH_SECRET'), expiresIn:'7d' })
     }
   }
-
-
-
 // В конструкторе только UserService и JwtService!
 async register(dto: RegisterUserDTO) {
     const candidate = await this.userService.findByEmail(dto.email);
@@ -47,8 +41,6 @@ async register(dto: RegisterUserDTO) {
     
     return { message: 'Success' };
 }
-
-
 async login(login: SignInUserDTO){
     const user = await this.userService.findByEmail(login.email)
     if(!user) throw new UnauthorizedException;
@@ -63,16 +55,12 @@ async login(login: SignInUserDTO){
     await this.userService.saveToken(hashRefreshToken, user.id)
     return { access_token: await this.jwt.signAsync(payload), refresh_token  };
 }
-
-
 async refreshTokens(id: string){
     const user = await this.userService.findById(id);
     if(!user) throw new UnauthorizedException({message: "User no exist"})
 
     const payload = { userId: user.id, email: user.email }
     const tokens = await this.getTokens(payload);
-  
-    console.log(tokens)
 
     const jwtRefreshHash = await bcrypt.hash(tokens.refresh_token, 10);
     await this.userService.saveToken(jwtRefreshHash, id);
@@ -82,7 +70,6 @@ async refreshTokens(id: string){
       acessToken: tokens.acess_token
     }
 }
-
 async logout(userId:string){
   const findUser = await this.userService.findById(userId);
 

@@ -1,16 +1,14 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 
 @Injectable() // Не забывай, гварды — это тоже провайдеры!
-export class JwtAuth extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
-    super();
-  }
+export class JwtAuth extends AuthGuard('jwt') implements CanActivate {
+  constructor(private reflector: Reflector) { super() }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // 1. Проверяем наличие метки @Public()
-    const isPublic = this.reflector.getAllAndOverride<boolean>('public', [
+    const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
       context.getHandler(),
       context.getClass(),
     ]);

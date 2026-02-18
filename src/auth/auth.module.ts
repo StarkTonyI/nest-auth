@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtRefresh } from "./strategy/JWT/jwt-refresh.strategy";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuth } from "./guard/jwt_auth";
+import { PostModule } from "src/post/post.module";
 
 @Module({
     providers:[AuthService, JwtStrategy, UserService, JwtRefresh, {
@@ -25,7 +26,7 @@ import { JwtAuth } from "./guard/jwt_auth";
     }),
 
    inject: [ConfigService],
- }), UserModule, 
+ }), UserModule,  PostModule
     ],
     controllers:[AuthController]
 })

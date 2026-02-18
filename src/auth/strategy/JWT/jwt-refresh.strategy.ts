@@ -9,7 +9,6 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class JwtRefresh extends PassportStrategy(Strategy, 'jwt-refresh'){
     constructor(config: ConfigService, private readonly userService: UserService){
-        console.log(config.get('JWT_REFRESH_SECRET'))
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: config.getOrThrow('JWT_REFRESH_SECRET'),
